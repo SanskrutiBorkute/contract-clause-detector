@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClauseGuard AI — Contract Anomaly Detector</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════ TOKENS ═══════════════════════════ */
+:root {
+  --void:    #080C14;
+  --bg:      #0F1520;
+  --bg2:     #141C2E;
+  --bg3:     #1A2340;
+  --bg4:     #1E2847;
+  --surface: #0F1520;
+  --card:    #141C2E;
+  --card2:   #1A2340;
+
+  --violet:  #7C3AED;
+  --vio-l:   rgba(124,58,237,0.15);
+  --vio-b:   rgba(124,58,237,0.08);
+  --vio-glow: rgba(124,58,237,0.35);
+  --vio-bright: #9F67FF;
+
+  --red:     #EF4444;
+  --red-l:   rgba(239,68,68,0.12);
+  --red-glow: rgba(239,68,68,0.3);
+
+  --amber:   #F59E0B;
+  --amb-l:   rgba(245,158,11,0.12);
+  --amb-glow: rgba(245,158,11,0.3);
+
+  --green:   #10B981;
+  --grn-l:   rgba(16,185,129,0.12);
+  --grn-glow: rgba(16,185,129,0.3);
+
+  --blue:    #3B82F6;
+  --blu-l:   rgba(59,130,246,0.12);
+
+  --text:    #E8EDF8;
+  --text2:   #8A99B8;
+  --text3:   #4A5878;
+  --text4:   #2A3550;
+
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.10);
+
+  --r: 12px;
+  --r-sm: 7px;
+  --r-lg: 18px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --glow-vio: 0 0 24px rgba(124,58,237,0.25);
+  --glow-red: 0 0 16px rgba(239,68,68,0.2);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--void);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ═══════════════════════════ ICON RAIL ═══════════════════════════ */
+.rail {
+  width: 64px;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 200;
+  gap: 4px;
+}
+
+.rail-logo {
+  width: 36px; height: 36px;
+  background: var(--violet);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+  box-shadow: var(--glow-vio);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.rail-sep {
+  width: 32px;
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+
+.rail-btn {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  background: transparent;
+  color: var(--text3);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.rail-btn:hover { background: var(--bg3); color: var(--text2); }
+
+.rail-btn.active {
+  background: var(--vio-l);
+  color: var(--vio-bright);
+  box-shadow: inset 0 0 0 1px rgba(124,58,237,0.3);
+}
+
+.rail-btn .tip {
+  position: absolute;
+  left: 52px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  font-family: 'IBM Plex Sans', sans-serif;
+  box-shadow: var(--shadow-sm);
+}
+
+.rail-btn:hover .tip { opacity: 1; }
+
+.rail-notif {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+
+.rail-bottom { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+.rail-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--violet), var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+  cursor: pointer;
+  border: 2px solid var(--border2);
+}
+
+/* ═══════════════════════════ MAIN AREA ═══════════════════════════ */
+.main {
+  margin-left: 64px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════ PAGE SYSTEM ═══════════════════════════ */
+.page { display: none; flex: 1; }
+.page.active { display: flex; flex-direction: column; }
+
+/* ═══════════════════════════ PAGE 1: LANDING ═══════════════════════════ */
+.land-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  background: var(--void);
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh);
+}
+
+/* ambient glow bg */
+.land-wrap::before {
+  content:'';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-60%);
+  pointer-events: none;
+}
+
+.land-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--vio-l);
+  border: 1px solid rgba(124,58,237,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--vio-bright);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.land-badge::before {
+  content:'';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--violet);
+  animation: blink 2s infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.land-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 58px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  text-align: center;
+  margin-bottom: 8px;
+  position: relative;
+  max-width: 700px;
+}
+
+.land-h1 em {
+  font-style: italic;
+  color: var(--vio-bright);
+}
+
+.land-sub {
+  font-size: 16px;
+  color: var(--text2);
+  text-align: center;
+  max-width: 500px;
+  line-height: 1.65;
+  margin: 16px auto 40px;
+  font-weight: 400;
+  position: relative;
+}
+
+/* Upload box */
+.land-upload {
+  background: var(--card);
+  border: 1.5px dashed var(--text4);
+  border-radius: var(--r-lg);
+  padding: 44px 48px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  max-width: 560px;
+  position: relative;
+}
+
+.land-upload:hover {
+  border-color: var(--violet);
+  background: var(--bg3);
+  box-shadow: var(--glow-vio);
+}
+
+.upload-ring {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--vio-l);
+  border: 2px solid rgba(124,58,237,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 18px;
+}
+
+.land-upload h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.land-upload p { font-size: 14px; color: var(--text2); margin-bottom: 22px; line-height: 1.5; }
+
+.land-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--violet);
+  color: #fff;
+  padding: 11px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.15s;
+  box-shadow: var(--glow-vio);
+  margin-bottom: 16px;
+}
+
+.land-upload-btn:hover { background: #6D28D9; box-shadow: 0 0 28px rgba(124,58,237,0.5); }
+
+.fmt-row { display: flex; justify-content: center; gap: 7px; flex-wrap: wrap; }
+.fmt-chip {
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg3);
+  color: var(--text3);
+  border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Alt upload row */
+.alt-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  max-width: 560px;
+  width: 100%;
+}
+
+.alt-btn {
+  flex: 1;
+  padding: 10px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.13s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.alt-btn:hover { background: var(--bg3); border-color: var(--violet); color: var(--vio-bright); }
+
+/* Stats row under upload */
+.land-stats {
+  display: flex;
+  gap: 36px;
+  margin-top: 40px;
+  position: relative;
+}
+
+.ls-item { text-align: center; }
+.ls-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+.ls-label { font-size: 11px; color: var(--text3); font-weight: 500; margin-top: 2px; }
+
+.ls-sep { width: 1px; background: var(--border2); align-self: stretch; }
+
+/* Feature chips below */
+.land-features {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px;
+}
+
+.feat-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: default;
+}
+
+/* ═══════════════════════════ PAGE 2: ANALYZE ═══════════════════════════ */
+.analyze-wrap {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  height: calc(100vh - 0px);
+  overflow: hidden;
+  flex: 1;
+}
+
+/* contract document panel */
+.doc-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.doc-topbar {
+  padding: 14px 22px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.doc-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-title-file {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 2px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+}
+
+.mini-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.13s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mini-btn:hover { background: var(--bg4); border-color: var(--violet); color: var(--vio-bright); }
+.mini-btn.vio { background: var(--violet); color: #fff; border-color: var(--violet); }
+.mini-btn.vio:hover { background: #6D28D9; }
+
+/* clause filter strip */
+.clause-filter {
+  display: flex;
+  gap: 5px;
+  padding: 10px 22px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.cf-btn {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text3);
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.13s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cf-btn:hover { background: var(--bg3); color: var(--text2); }
+.cf-btn.active { background: var(--vio-l); color: var(--vio-bright); border-color: rgba(124,58,237,0.3); }
+.cf-btn.red-f.active { background: var(--red-l); color: var(--red); border-color: rgba(239,68,68,0.3); }
+.cf-btn.amb-f.active { background: var(--amb-l); color: var(--amber); border-color: rgba(245,158,11,0.3); }
+.cf-btn.grn-f.active { background: var(--grn-l); color: var(--green); border-color: rgba(16,185,129,0.3); }
+
+.cf-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+/* Contract text scroll */
+.contract-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 36px;
+}
+
+.contract-paper {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.contract-paper h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.contract-paper .contract-sub {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 28px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.contract-paper p {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.85;
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+
+.contract-paper .clause-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.contract-paper .clause-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.1px;
+}
+
+/* ── AI-HIGHLIGHTED CLAUSE BLOCKS ── */
+.clause-block {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.clause-block:hover { filter: brightness(1.1); }
+
+.clause-block.danger {
+  background: var(--red-l);
+  border-color: rgba(239,68,68,0.25);
+  border-left: 3px solid var(--red);
+}
+
+.clause-block.danger:hover { box-shadow: var(--glow-red); }
+
+.clause-block.warning {
+  background: var(--amb-l);
+  border-color: rgba(245,158,11,0.25);
+  border-left: 3px solid var(--amber);
+}
+
+.clause-block.warning:hover { box-shadow: 0 0 16px rgba(245,158,11,0.2); }
+
+.clause-block.safe {
+  background: var(--grn-l);
+  border-color: rgba(16,185,129,0.2);
+  border-left: 3px solid var(--green);
+}
+
+.clause-block.neutral {
+  background: var(--bg3);
+  border-color: var(--border);
+  border-left: 3px solid var(--text4);
+}
+
+.clause-block.selected {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.clause-tag {
+  position: absolute;
+  top: 10px; right: 12px;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-danger { background: rgba(239,68,68,0.2); color: var(--red); }
+.tag-warning { background: rgba(245,158,11,0.2); color: var(--amber); }
+.tag-safe { background: rgba(16,185,129,0.2); color: var(--green); }
+.tag-neutral { background: var(--bg4); color: var(--text3); }
+
+/* Inline highlight spans inside clause text */
+.hl {
+  border-radius: 3px;
+  padding: 1px 3px;
+  font-weight: 600;
+}
+.hl-r { background: rgba(239,68,68,0.25); color: #FCA5A5; }
+.hl-a { background: rgba(245,158,11,0.2); color: #FCD34D; }
+.hl-g { background: rgba(16,185,129,0.15); color: #6EE7B7; }
+
+/* ── ANALYSIS SIDEBAR ── */
+.analysis-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg2);
+}
+
+.ap-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ap-head-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
+}
+
+.ap-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.ap-sub { font-size: 12px; color: var(--text3); }
+
+.risk-meter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--red-l);
+  border-radius: 8px;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.risk-score {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--red);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.risk-label-col { flex: 1; }
+.risk-label { font-size: 12px; font-weight: 700; color: var(--red); }
+.risk-sub { font-size: 11px; color: rgba(239,68,68,0.6); margin-top: 2px; }
+
+.risk-bar-bg {
+  height: 5px;
+  background: rgba(239,68,68,0.15);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.risk-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--amber), var(--red));
+  border-radius: 3px;
+  width: 74%;
+}
+
+/* clause scroll list */
+.clause-list-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.cl-item {
+  display: flex;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.13s;
+  margin-bottom: 3px;
+  border: 1px solid transparent;
+}
+
+.cl-item:hover { background: var(--bg3); }
+.cl-item.cl-selected { background: var(--vio-l); border-color: rgba(124,58,237,0.3); }
+
+.cl-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cl-icon.danger { background: var(--red-l); }
+.cl-icon.warning { background: var(--amb-l); }
+.cl-icon.safe { background: var(--grn-l); }
+.cl-icon.neutral { background: var(--bg3); }
+
+.cl-body { flex: 1; min-width: 0; }
+.cl-name { font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cl-preview { font-size: 11px; color: var(--text3); line-height: 1.4; }
+
+.cl-risk {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  align-self: flex-start;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.risk-d { background: var(--red-l); color: var(--red); }
+.risk-w { background: var(--amb-l); color: var(--amber); }
+.risk-s { background: var(--grn-l); color: var(--green); }
+.risk-n { background: var(--bg3); color: var(--text3); }
+
+.ap-action-row {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.ap-act-btn {
+  flex: 1;
+  padding: 9px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.13s;
+  text-align: center;
+}
+
+.ap-act-btn:hover { background: var(--bg4); color: var(--text); }
+.ap-act-btn.primary { background: var(--violet); color: #fff; border-color: var(--violet); }
+.ap-act-btn.primary:hover { background: #6D28D9; }
+
+/* ═══════════════════════════ PAGE 3: CLAUSE DETAIL ═══════════════════════════ */
+.detail-wrap {
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+  height: 100vh;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* left: clause navigator */
+.clause-nav {
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cn-head {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.cn-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+}
+
+.risk-counts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+.rc-box {
+  background: var(--bg3);
+  border-radius: 7px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.rc-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.rc-lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.rc-box.danger .rc-num { color: var(--red); }
+.rc-box.danger .rc-lbl { color: rgba(239,68,68,0.6); }
+.rc-box.warning .rc-num { color: var(--amber); }
+.rc-box.warning .rc-lbl { color: rgba(245,158,11,0.6); }
+.rc-box.safe .rc-num { color: var(--green); }
+.rc-box.safe .rc-lbl { color: rgba(16,185,129,0.6); }
+
+.cn-scroll { flex: 1; overflow-y: auto; padding: 8px; }
+
+.cn-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.13s;
+  margin-bottom: 2px;
+  border: 1px solid transparent;
+}
+
+.cn-item:hover { background: var(--bg3); }
+
+.cn-item.selected {
+  background: var(--vio-l);
+  border-color: rgba(124,58,237,0.25);
+}
+
+.cn-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cn-dot.d { background: var(--red); box-shadow: 0 0 6px rgba(239,68,68,0.5); }
+.cn-dot.w { background: var(--amber); box-shadow: 0 0 6px rgba(245,158,11,0.5); }
+.cn-dot.s { background: var(--green); box-shadow: 0 0 6px rgba(16,185,129,0.5); }
+
+.cn-name { font-size: 12.5px; font-weight: 600; color: var(--text); flex: 1; }
+.cn-badge {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* center: clause text + AI markup */
+.clause-center {
+  background: var(--bg2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cc-topbar {
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+
+.cc-clause-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+  letter-spacing: -0.3px;
+}
+
+.cc-scroll { flex: 1; overflow-y: auto; padding: 28px 32px; }
+
+/* the clause text display */
+.clause-text-box {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  line-height: 1.9;
+  font-size: 14px;
+  color: var(--text2);
+  position: relative;
+}
+
+.clause-text-box .clause-id {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.clause-text-box .clause-head-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+/* problem annotation boxes */
+.annotation {
+  background: var(--bg3);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.annotation::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.annotation.ann-danger::before { background: var(--red); }
+.annotation.ann-warning::before { background: var(--amber); }
+.annotation.ann-safe::before { background: var(--green); }
+
+.ann-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ann-danger .ann-label { color: var(--red); }
+.ann-warning .ann-label { color: var(--amber); }
+.ann-safe .ann-label { color: var(--green); }
+
+.ann-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+.ann-text strong { color: var(--text); font-weight: 700; }
+
+.suggestion-box {
+  background: var(--vio-l);
+  border: 1px solid rgba(124,58,237,0.2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.sugg-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--vio-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 7px;
+}
+
+.sugg-text { font-size: 13px; color: rgba(159,103,255,0.85); line-height: 1.6; }
+.sugg-text strong { color: var(--vio-bright); }
+
+/* right: action panel */
+.clause-actions {
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ca-head {
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ca-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+}
+
+.severity-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sev-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.sev-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+
+.sev-label { color: var(--text2); font-weight: 500; flex: 1; }
+.sev-val { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; }
+
+.ca-scroll { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+
+.ca-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 13px 14px;
+}
+
+.ca-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 7px;
+}
+
+.ca-card-text { font-size: 12.5px; color: var(--text2); line-height: 1.6; }
+.ca-card-text strong { color: var(--text); }
+
+.law-ref {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--vio-bright);
+  background: var(--vio-l);
+  padding: 3px 9px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.ca-actions { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
+
+.ca-btn {
+  padding: 9px 14px;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.13s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ca-btn:hover { background: var(--bg4); color: var(--text); }
+.ca-btn.red { background: var(--red-l); color: var(--red); border-color: rgba(239,68,68,0.2); }
+.ca-btn.vio { background: var(--violet); color: #fff; border-color: var(--violet); }
+.ca-btn.vio:hover { background: #6D28D9; }
+
+/* ═══════════════════════════ PAGE 4: REPORT ═══════════════════════════ */
+.report-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px 48px;
+  background: var(--void);
+}
+
+.report-inner { max-width: 820px; margin: 0 auto; }
+
+.report-hero {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-lg);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.report-hero::before {
+  content:'';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(239,68,68,0.12) 0%, transparent 70%);
+}
+
+.rh-score {
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  background: var(--red-l);
+  border: 2px solid rgba(239,68,68,0.3);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 24px rgba(239,68,68,0.2);
+}
+
+.rh-score-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--red);
+  line-height: 1;
+}
+
+.rh-score-lbl { font-size: 9px; color: rgba(239,68,68,0.6); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.rh-info { flex: 1; position: relative; }
+
+.rh-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  margin-bottom: 6px;
+}
+
+.rh-sub { font-size: 13px; color: var(--text2); margin-bottom: 12px; line-height: 1.5; }
+
+.rh-pills { display: flex; gap: 7px; flex-wrap: wrap; }
+
+.rh-pill {
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--bg3);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+
+.rh-pill.danger { background: var(--red-l); color: var(--red); border-color: rgba(239,68,68,0.2); }
+.rh-pill.warning { background: var(--amb-l); color: var(--amber); border-color: rgba(245,158,11,0.2); }
+
+/* report sections */
+.rep-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.rep-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.rep-card-head {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.rep-card-title { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
+
+.rep-card-body { padding: 14px 18px; }
+
+/* critical clause list in report */
+.crit-item {
+  display: flex;
+  gap: 11px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.crit-item:last-child { border-bottom: none; }
+
+.crit-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  padding-top: 2px;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.crit-body { flex: 1; }
+.crit-name { font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.crit-why { font-size: 11.5px; color: var(--text3); line-height: 1.4; }
+.crit-tag { margin-top: 5px; display: inline-block; }
+
+/* score breakdown */
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+}
+
+.score-row:last-child { border-bottom: none; }
+.score-label { color: var(--text2); font-weight: 500; flex: 1; }
+.score-bar-bg { width: 100px; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 3px; }
+.score-val { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; width: 36px; text-align: right; }
+
+/* recommendations */
+.rec-item {
+  display: flex;
+  gap: 10px;
+  padding: 11px 13px;
+  background: var(--bg3);
+  border-radius: 8px;
+  margin-bottom: 7px;
+  border: 1px solid var(--border);
+}
+
+.rec-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.rec-text { font-size: 12.5px; color: var(--text2); line-height: 1.5; }
+.rec-text strong { color: var(--text); font-weight: 700; }
+
+/* action footer */
+.rep-action-row {
+  display: flex;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+}
+
+.rep-btn {
+  flex: 1;
+  padding: 11px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.13s;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+
+.rep-btn:hover { background: var(--bg4); color: var(--text); }
+.rep-btn.vio { background: var(--violet); color: #fff; border-color: var(--violet); box-shadow: var(--glow-vio); }
+.rep-btn.vio:hover { background: #6D28D9; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+/* anims */
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.anim { animation: fadeUp 0.4s ease both; }
+.d1{animation-delay:.06s} .d2{animation-delay:.12s} .d3{animation-delay:.18s} .d4{animation-delay:.24s}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ ICON RAIL ════════════════════ -->
+<div class="rail">
+  <div class="rail-logo" onclick="showPage('land')">⚖</div>
+
+  <button class="rail-btn active" id="rail-land" onclick="showPage('land')">
+    🏠<span class="tip">Home</span>
+  </button>
+  <button class="rail-btn" id="rail-analyze" onclick="showPage('analyze')">
+    🔍<span class="tip">Analyze Contract</span>
+  </button>
+  <button class="rail-btn" id="rail-detail" onclick="showPage('detail')">
+    📋<span class="tip">Clause Detail</span>
+  </button>
+  <button class="rail-btn" id="rail-report" onclick="showPage('report')">
+    📊<span class="tip">Risk Report</span>
+    <div class="rail-notif"></div>
+  </button>
+
+  <div class="rail-sep"></div>
+
+  <button class="rail-btn">
+    📚<span class="tip">Contract Library</span>
+  </button>
+  <button class="rail-btn">
+    📜<span class="tip">Legal Glossary</span>
+  </button>
+  <button class="rail-btn">
+    🔔<span class="tip">Alerts</span>
+  </button>
+
+  <div class="rail-bottom">
+    <button class="rail-btn">⚙<span class="tip">Settings</span></button>
+    <div class="rail-avatar">RS</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+  PAGE 1: LANDING
+════════════════════════════════════════════ -->
+<main class="main">
+<div class="page active" id="page-land">
+  <div class="land-wrap">
+    <div class="land-badge">AI-Powered Legal Intelligence</div>
+
+    <h1 class="land-h1">Your contract,<br><em>decoded.</em></h1>
+
+    <p class="land-sub">Upload any contract — rental agreement, vendor deal, employment letter, loan document. Our AI flags every predatory clause, missing protection, and hidden risk before you sign.</p>
+
+    <div class="land-upload" onclick="showPage('analyze')">
+      <input type="file" id="pdfFile" accept=".pdf" hidden>
+      <div class="upload-ring">📄</div>
+      <h3>Drop your contract here</h3>
+      <p>PDF, Word document, or image scan of any agreement — we'll read and analyze every clause instantly.</p>
+      <button
+class="land-upload-btn"
+onclick="event.stopPropagation(); document.getElementById('pdfFile').click();">
+⚖ &nbsp;Analyze Contract
+</button>
+      <div class="fmt-row">
+        <span class="fmt-chip">.PDF</span>
+        <span class="fmt-chip">.DOCX</span>
+        <span class="fmt-chip">.JPG / .PNG</span>
+        <span class="fmt-chip">Scan</span>
+      </div>
+    </div>
+
+    <div class="alt-row">
+      <button class="alt-btn">📋 &nbsp;Paste contract text</button>
+      <button class="alt-btn">☁ &nbsp;Google Drive</button>
+      <button class="alt-btn">🔗 &nbsp;Import from URL</button>
+    </div>
+
+    <div class="land-stats">
+      <div class="ls-item">
+        <div class="ls-num">24,800+</div>
+        <div class="ls-label">Contracts analyzed</div>
+      </div>
+      <div class="ls-sep"></div>
+      <div class="ls-item">
+        <div class="ls-num">3.2M</div>
+        <div class="ls-label">Clauses reviewed</div>
+      </div>
+      <div class="ls-sep"></div>
+      <div class="ls-item">
+        <div class="ls-num">₹48Cr</div>
+        <div class="ls-label">Disputes prevented</div>
+      </div>
+      <div class="ls-sep"></div>
+      <div class="ls-item">
+        <div class="ls-num">18</div>
+        <div class="ls-label">Clause risk categories</div>
+      </div>
+    </div>
+
+    <div class="land-features">
+      <span class="feat-chip">⚠ Predatory Clause Detection</span>
+      <span class="feat-chip">🔒 Missing Protection Finder</span>
+      <span class="feat-chip">📖 Plain-Language Explanation</span>
+      <span class="feat-chip">⚖ Indian Law Reference</span>
+      <span class="feat-chip">✏ Suggested Rewrites</span>
+      <span class="feat-chip">📊 Risk Score</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+  PAGE 2: ANALYZE
+════════════════════════════════════════════ -->
+<div class="page" id="page-analyze">
+  <div class="analyze-wrap">
+
+    <!-- Document Panel -->
+    <div class="doc-panel">
+      <div class="doc-topbar">
+        <div class="doc-title">
+          📄 Contract Viewer
+          <span class="doc-title-file">rental_agreement_nagpur.pdf</span>
+        </div>
+        <button class="mini-btn" onclick="showPage('land')">← Back</button>
+        <button class="mini-btn">↕ Zoom</button>
+        <button class="mini-btn">🖨 Print</button>
+        <button class="mini-btn vio" onclick="showPage('report')">Full Report →</button>
+      </div>
+
+      <div class="clause-filter">
+        <button class="cf-btn active">All Clauses (12)</button>
+        <button class="cf-btn red-f"><span class="cf-dot" style="background:var(--red)"></span> Danger (5)</button>
+        <button class="cf-btn amb-f"><span class="cf-dot" style="background:var(--amber)"></span> Warning (4)</button>
+        <button class="cf-btn grn-f"><span class="cf-dot" style="background:var(--green)"></span> Safe (3)</button>
+      </div>
+
+      <div class="contract-scroll">
+        <div class="contract-paper">
+          <h2>RESIDENTIAL LEASE AGREEMENT</h2>
+          <div class="contract-sub">Between: Ramesh Verma (Landlord) · And: Rahul Sharma (Tenant) · Nagpur, Maharashtra</div>
+
+          <div class="clause-block neutral" onclick="selectClause('parties')">
+            <span class="clause-tag tag-neutral">Standard</span>
+            <div class="clause-num">CLAUSE 1</div>
+            <div class="clause-title">Parties to the Agreement</div>
+            <p>This Residential Lease Agreement ("Agreement") is entered into as of 1st June 2025, between <strong>Ramesh Verma</strong> ("Landlord"), residing at Plot 22, Civil Lines, Nagpur, and <strong>Rahul Sharma</strong> ("Tenant"), currently residing at Manish Nagar, Nagpur.</p>
+          </div>
+
+          <div class="clause-block safe" onclick="selectClause('rent')">
+            <span class="clause-tag tag-safe">✓ Fair</span>
+            <div class="clause-num">CLAUSE 2</div>
+            <div class="clause-title">Rent & Payment Terms</div>
+            <p>The monthly rent shall be <span class="hl hl-g">₹12,000</span> payable on or before the <span class="hl hl-g">5th of each month</span>. A grace period of <span class="hl hl-g">5 days</span> shall be allowed before any late fee is applied.</p>
+          </div>
+
+          <div class="clause-block danger" onclick="selectClause('deposit'); showPage('detail')">
+            <span class="clause-tag tag-danger">⚠ Danger</span>
+            <div class="clause-num">CLAUSE 3</div>
+            <div class="clause-title">Security Deposit</div>
+            <p>The Tenant shall pay a security deposit of <span class="hl hl-r">₹1,20,000 (10 months rent)</span>. The Landlord may <span class="hl hl-r">forfeit the entire deposit</span> at his sole discretion for any damage, howsoever caused, including <span class="hl hl-r">normal wear and tear</span>. Deposit shall be returned within <span class="hl hl-r">180 days</span> of vacating.</p>
+          </div>
+
+          <div class="clause-block danger" onclick="selectClause('evict'); showPage('detail')">
+            <span class="clause-tag tag-danger">⚠ Danger</span>
+            <div class="clause-num">CLAUSE 4</div>
+            <div class="clause-title">Eviction & Termination</div>
+            <p>The Landlord reserves the right to <span class="hl hl-r">terminate this agreement with 24 hours notice</span> for any breach, including subjective breaches. Tenant shall vacate <span class="hl hl-r">immediately upon oral notice</span> from the Landlord without any court order or legal process.</p>
+          </div>
+
+          <div class="clause-block warning" onclick="selectClause('repairs')">
+            <span class="clause-tag tag-warning">⚡ Review</span>
+            <div class="clause-num">CLAUSE 5</div>
+            <div class="clause-title">Repairs & Maintenance</div>
+            <p>The Tenant shall be responsible for <span class="hl hl-a">all repairs</span>, including structural repairs, plumbing, and electrical work, regardless of cause. The Landlord shall bear no responsibility for <span class="hl hl-a">any maintenance costs</span> during the tenancy period.</p>
+          </div>
+
+          <div class="clause-block danger" onclick="selectClause('lock')">
+            <span class="clause-tag tag-danger">⚠ Danger</span>
+            <div class="clause-num">CLAUSE 6</div>
+            <div class="clause-title">Lock-In Period & Penalty</div>
+            <p>This agreement has a lock-in period of <span class="hl hl-r">36 months</span>. If the Tenant vacates before this period, a penalty of <span class="hl hl-r">6 months rent (₹72,000)</span> shall be immediately payable in addition to <span class="hl hl-r">forfeiture of the full deposit</span>.</p>
+          </div>
+
+          <div class="clause-block warning" onclick="selectClause('sublease')">
+            <span class="clause-tag tag-warning">⚡ Review</span>
+            <div class="clause-num">CLAUSE 7</div>
+            <div class="clause-title">Sub-Letting</div>
+            <p>The Tenant shall not sublet, assign, or transfer any part of the premises. Any violation will result in <span class="hl hl-a">immediate forfeiture of deposit</span> and termination of this agreement without notice.</p>
+          </div>
+
+          <div class="clause-block safe" onclick="selectClause('dispute')">
+            <span class="clause-tag tag-safe">✓ Fair</span>
+            <div class="clause-num">CLAUSE 8</div>
+            <div class="clause-title">Dispute Resolution</div>
+            <p>Any disputes arising under this Agreement shall be subject to <span class="hl hl-g">mediation first</span>, followed by arbitration under the Arbitration and Conciliation Act, 1996, in Nagpur. Both parties agree to participate in good faith.</p>
+          </div>
+
+          <div class="clause-block danger" onclick="selectClause('inspect')">
+            <span class="clause-tag tag-danger">⚠ Danger</span>
+            <div class="clause-title">CLAUSE 9 — Landlord Entry & Inspection</div>
+            <p>The Landlord or his representatives may enter the premises <span class="hl hl-r">at any time without prior notice</span> for inspection, repairs, or any other purpose deemed necessary by the Landlord.</p>
+          </div>
+
+          <div class="clause-block warning" onclick="selectClause('alteration')">
+            <span class="clause-tag tag-warning">⚡ Review</span>
+            <div class="clause-title">CLAUSE 10 — Alterations</div>
+            <p>No alterations, additions, or improvements shall be made to the premises without <span class="hl hl-a">written consent of the Landlord</span>. Any improvements made by the Tenant shall become the property of the Landlord <span class="hl hl-a">without compensation</span>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis Sidebar -->
+    <div class="analysis-panel">
+      <div class="ap-head">
+        <div class="ap-head-label">Contract Risk Analysis</div>
+        <div class="ap-title">Rental Agreement</div>
+        <div class="ap-sub">Nagpur · 12 clauses · AI reviewed</div>
+        <div class="risk-meter-row">
+          <div>
+            <div class="rh-score-num" id="riskScoreDisplay">74</div>
+            <div style="font-size:9px;color:rgba(239,68,68,0.5);font-weight:700;margin-top:2px">RISK SCORE</div>
+          </div>
+          <div class="risk-label-col">
+            <div class="risk-label" id="riskLabel">HIGH RISK</div>
+            <div class="risk-sub">Sign with caution — 5 critical issues</div>
+            <div class="risk-bar-bg"><div class="risk-bar-fill"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clause-list-scroll">
+
+        <div class="cl-item cl-selected" onclick="selectClause('deposit'); showPage('detail')">
+          <div class="cl-icon danger">🔴</div>
+          <div class="cl-body">
+            <div class="cl-name">Security Deposit — Clause 3</div>
+            <div class="cl-preview">10-month deposit + forfeit on normal wear</div>
+          </div>
+          <span class="cl-risk risk-d">HIGH</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('evict'); showPage('detail')">
+          <div class="cl-icon danger">🔴</div>
+          <div class="cl-body">
+            <div class="cl-name">Eviction — 24hr Notice</div>
+            <div class="cl-preview">Oral eviction without court order — illegal</div>
+          </div>
+          <span class="cl-risk risk-d">CRIT</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('lock')">
+          <div class="cl-icon danger">🔴</div>
+          <div class="cl-body">
+            <div class="cl-name">Lock-in — 36 Months + ₹72k Penalty</div>
+            <div class="cl-preview">Excessive lock-in with double penalty</div>
+          </div>
+          <span class="cl-risk risk-d">HIGH</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('inspect')">
+          <div class="cl-icon danger">🔴</div>
+          <div class="cl-body">
+            <div class="cl-name">Landlord Entry — No Notice</div>
+            <div class="cl-preview">Entry at any time without prior notice</div>
+          </div>
+          <span class="cl-risk risk-d">HIGH</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('repairs')">
+          <div class="cl-icon warning">🟡</div>
+          <div class="cl-body">
+            <div class="cl-name">All Repairs on Tenant</div>
+            <div class="cl-preview">Including structural — unreasonable burden</div>
+          </div>
+          <span class="cl-risk risk-w">MED</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('alteration')">
+          <div class="cl-icon warning">🟡</div>
+          <div class="cl-body">
+            <div class="cl-name">Improvements → Landlord Property</div>
+            <div class="cl-preview">No compensation for tenant improvements</div>
+          </div>
+          <span class="cl-risk risk-w">MED</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('sublease')">
+          <div class="cl-icon warning">🟡</div>
+          <div class="cl-body">
+            <div class="cl-name">Sub-letting Ban + Penalty</div>
+            <div class="cl-preview">Deposit forfeited for subletting</div>
+          </div>
+          <span class="cl-risk risk-w">MED</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('rent')">
+          <div class="cl-icon safe">🟢</div>
+          <div class="cl-body">
+            <div class="cl-name">Rent & Grace Period — Fair</div>
+            <div class="cl-preview">₹12,000/mo · 5 day grace period</div>
+          </div>
+          <span class="cl-risk risk-s">LOW</span>
+        </div>
+
+        <div class="cl-item" onclick="selectClause('dispute')">
+          <div class="cl-icon safe">🟢</div>
+          <div class="cl-body">
+            <div class="cl-name">Dispute Resolution — Balanced</div>
+            <div class="cl-preview">Mediation + arbitration, mutual consent</div>
+          </div>
+          <span class="cl-risk risk-s">LOW</span>
+        </div>
+
+      </div>
+
+      <div id="resultsBox" style="
+margin:10px;
+padding:15px;
+background:#141C2E;
+border-radius:10px;
+color:white;
+">
+Waiting for analysis...
+</div>
+
+      <div class="ap-action-row">
+        <button class="ap-act-btn" onclick="showPage('detail')">Clause Detail</button>
+        <button class="ap-act-btn primary" onclick="showPage('report')">Full Report →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+  PAGE 3: CLAUSE DETAIL
+════════════════════════════════════════════ -->
+<div class="page" id="page-detail">
+  <div class="detail-wrap">
+
+    <!-- Clause Navigator -->
+    <div class="clause-nav">
+      <div class="cn-head">
+        <div class="cn-title">Clause Navigator</div>
+        <div class="risk-counts">
+          <div class="rc-box danger"><div class="rc-num">5</div><div class="rc-lbl">Danger</div></div>
+          <div class="rc-box warning"><div class="rc-num">4</div><div class="rc-lbl">Warning</div></div>
+          <div class="rc-box safe"><div class="rc-num">3</div><div class="rc-lbl">Safe</div></div>
+        </div>
+      </div>
+
+      <div class="cn-scroll">
+
+        <div class="cn-item selected">
+          <div class="cn-dot d"></div>
+          <div class="cn-name">Security Deposit</div>
+          <span class="cn-badge risk-d">DANGER</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('evict')">
+          <div class="cn-dot d"></div>
+          <div class="cn-name">Eviction — 24hr Notice</div>
+          <span class="cn-badge risk-d">CRIT</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('lock')">
+          <div class="cn-dot d"></div>
+          <div class="cn-name">Lock-in Period</div>
+          <span class="cn-badge risk-d">HIGH</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('inspect')">
+          <div class="cn-dot d"></div>
+          <div class="cn-name">Landlord Entry Rights</div>
+          <span class="cn-badge risk-d">HIGH</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('missing')">
+          <div class="cn-dot d"></div>
+          <div class="cn-name">⚠ Missing: Deposit Receipt</div>
+          <span class="cn-badge risk-d">MISSING</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('repairs')">
+          <div class="cn-dot w"></div>
+          <div class="cn-name">All Repairs on Tenant</div>
+          <span class="cn-badge risk-w">MED</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('alteration')">
+          <div class="cn-dot w"></div>
+          <div class="cn-name">Improvements Forfeited</div>
+          <span class="cn-badge risk-w">MED</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('sublease')">
+          <div class="cn-dot w"></div>
+          <div class="cn-name">Sub-letting Penalty</div>
+          <span class="cn-badge risk-w">MED</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('rental_increase')">
+          <div class="cn-dot w"></div>
+          <div class="cn-name">⚠ Missing: Rent Increase Cap</div>
+          <span class="cn-badge risk-w">MISSING</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('rent')">
+          <div class="cn-dot s"></div>
+          <div class="cn-name">Rent & Grace Period</div>
+          <span class="cn-badge risk-s">SAFE</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('dispute')">
+          <div class="cn-dot s"></div>
+          <div class="cn-name">Dispute Resolution</div>
+          <span class="cn-badge risk-s">SAFE</span>
+        </div>
+
+        <div class="cn-item" onclick="switchClause('parties')">
+          <div class="cn-dot s"></div>
+          <div class="cn-name">Parties to Agreement</div>
+          <span class="cn-badge risk-s">SAFE</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Center: Clause Text + AI Markup -->
+    <div class="clause-center">
+      <div class="cc-topbar">
+        <div class="cc-clause-name" id="detail-title">Security Deposit — Clause 3</div>
+        <button class="mini-btn" onclick="showPage('analyze')">← Back to Contract</button>
+        <button class="mini-btn vio" onclick="showPage('report')">View Report →</button>
+      </div>
+
+      <div class="cc-scroll">
+
+        <!-- Original clause -->
+        <div class="clause-text-box">
+          <div class="clause-id">CLAUSE 3 · SECURITY DEPOSIT · DETECTED RISK: HIGH</div>
+          <div class="clause-head-title">Security Deposit</div>
+          The Tenant shall pay a security deposit of
+          <span class="hl hl-r">₹1,20,000 (10 months rent)</span>.
+          The Landlord may <span class="hl hl-r">forfeit the entire deposit at his sole discretion</span>
+          for any damage, howsoever caused, including
+          <span class="hl hl-r">normal wear and tear</span>.
+          Deposit shall be returned within <span class="hl hl-r">180 days</span> of vacating.
+        </div>
+
+        <!-- AI Annotations -->
+        <div class="annotation ann-danger">
+          <div class="ann-label">⚠ Problem 1 — Excessive Deposit Amount</div>
+          <div class="ann-text">The deposit is <strong>10 months rent (₹1,20,000)</strong>. Under Maharashtra Rent Control Act and standard practice, security deposit should not exceed <strong>2–3 months rent (₹24,000–₹36,000)</strong>. A 10-month deposit is legally contestable and financially exploitative.</div>
+        </div>
+
+        <div class="annotation ann-danger">
+          <div class="ann-label">⚠ Problem 2 — Forfeit for Normal Wear & Tear</div>
+          <div class="ann-text">The clause allows the landlord to forfeit your deposit for <strong>"normal wear and tear"</strong> — this is <strong>illegal</strong>. Normal wear and tear (paint fading, minor scuffs) is always the landlord's responsibility under Indian tenancy law. The tenant is only liable for <strong>wilful or negligent damage</strong>.</div>
+        </div>
+
+        <div class="annotation ann-danger">
+          <div class="ann-label">⚠ Problem 3 — 180-Day Return Period</div>
+          <div class="ann-text">A <strong>180-day (6-month)</strong> return window for the deposit is unreasonable and unenforceable. Standard practice and model tenancy laws require deposit return within <strong>30 days</strong> of vacating, after deduction for verified damages only.</div>
+        </div>
+
+        <!-- AI Suggested Rewrite -->
+        <div class="suggestion-box">
+          <div class="sugg-label">✏ AI Suggested Rewrite</div>
+          <div class="sugg-text">
+            The Tenant shall pay a security deposit of <strong>₹36,000 (3 months rent)</strong>. The Landlord may deduct from the deposit only the cost of repairing <strong>damage caused by the Tenant beyond normal wear and tear</strong>, with written itemized proof. The remaining deposit shall be returned within <strong>30 days</strong> of vacating, along with a written statement of any deductions.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right: Actions & Legal Context -->
+    <div class="clause-actions">
+      <div class="ca-head">
+        <div class="ca-title">Risk Assessment</div>
+        <div class="severity-row">
+          <div class="sev-item">
+            <div class="sev-dot" style="background:var(--red)"></div>
+            <div class="sev-label">Financial Risk</div>
+            <div class="sev-val" style="color:var(--red)">HIGH</div>
+          </div>
+          <div class="sev-item">
+            <div class="sev-dot" style="background:var(--red)"></div>
+            <div class="sev-label">Legal Validity</div>
+            <div class="sev-val" style="color:var(--red)">WEAK</div>
+          </div>
+          <div class="sev-item">
+            <div class="sev-dot" style="background:var(--amber)"></div>
+            <div class="sev-label">Negotiability</div>
+            <div class="sev-val" style="color:var(--amber)">MED</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-scroll">
+
+        <div class="ca-card">
+          <div class="ca-card-label">What this means for you</div>
+          <div class="ca-card-text">You could lose up to <strong>₹1,20,000</strong> with no legal recourse if you sign this clause as written. The landlord can claim deposit for paint, scuffs, or any minor issue and you have no defined timeline to challenge it.</div>
+        </div>
+
+        <div class="ca-card">
+          <div class="ca-card-label">Indian Law Reference</div>
+          <div class="ca-card-text">
+            This clause likely violates:
+            <br><br>
+            <span class="law-ref">Maharashtra Rent Control Act, 1999</span>
+            <br>
+            <span class="law-ref">Model Tenancy Act, 2021 — Sec. 11</span>
+            <br>
+            <span class="law-ref">Consumer Protection Act, 2019</span>
+          </div>
+        </div>
+
+        <div class="ca-card">
+          <div class="ca-card-label">How to negotiate</div>
+          <div class="ca-card-text">Ask the landlord to change deposit to <strong>2 months</strong>, add "excluding normal wear and tear" and reduce return window to <strong>30 days</strong>. Most landlords in Nagpur will negotiate deposit down to 3 months if asked directly with reasons.</div>
+        </div>
+
+        <div class="ca-card">
+          <div class="ca-card-label">If landlord refuses</div>
+          <div class="ca-card-text">File a complaint with the <strong>Rent Controller, Nagpur</strong> or approach <strong>Consumer Forum</strong> after vacating. Keep all payment receipts and document the property condition with photos on move-in day.</div>
+        </div>
+
+      </div>
+
+      <div class="ca-actions">
+        <button class="ca-btn red">🚩 Flag as Unacceptable</button>
+        <button class="ca-btn">📋 Copy Suggested Rewrite</button>
+        <button class="ca-btn">📤 Share with Lawyer</button>
+        <button class="ca-btn vio" onclick="showPage('report')">📊 Full Risk Report →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+  PAGE 4: RISK REPORT
+════════════════════════════════════════════ -->
+<div class="page" id="page-report">
+  <div class="report-wrap">
+    <div class="report-inner">
+
+      <!-- Hero -->
+      <div class="report-hero anim">
+        <div class="rh-score">
+          <div class="rh-score-num">74</div>
+          <div class="rh-score-lbl">Risk Score</div>
+        </div>
+        <div class="rh-info">
+          <div class="rh-title">Rental Agreement — High Risk</div>
+          <div class="rh-sub">AI found <strong style="color:var(--red)">5 critical clauses</strong>, 4 medium-risk clauses, and 3 missing protections. Do not sign without negotiating key terms.</div>
+          <div class="rh-pills">
+            <span class="rh-pill danger">5 Danger Clauses</span>
+            <span class="rh-pill warning">4 Warnings</span>
+            <span class="rh-pill">3 Missing Clauses</span>
+            <span class="rh-pill">₹1,92,000 at risk</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;flex-shrink:0">
+          <button class="mini-btn vio" onclick="showPage('analyze')" style="padding:8px 16px">← Back to Contract</button>
+          <button class="mini-btn" style="padding:8px 16px">📥 Download PDF</button>
+        </div>
+      </div>
+
+      <!-- Score Breakdown + Critical Clauses -->
+      <div class="rep-grid">
+
+        <div class="rep-card anim d1">
+          <div class="rep-card-head">
+            <div class="rep-card-title">⚠ Critical Clauses</div>
+            <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--red-l);color:var(--red)">5 Found</span>
+          </div>
+          <div class="rep-card-body">
+            <div class="crit-item">
+              <div class="crit-num">C3</div>
+              <div class="crit-body">
+                <div class="crit-name">Security Deposit — 10 months</div>
+                <div class="crit-why">3× above normal. Forfeit on wear & tear is illegal.</div>
+                <span class="crit-tag"><span class="cn-badge risk-d" style="font-size:9px">₹1,20,000 at risk</span></span>
+              </div>
+            </div>
+            <div class="crit-item">
+              <div class="crit-num">C4</div>
+              <div class="crit-body">
+                <div class="crit-name">Eviction — 24hr Oral Notice</div>
+                <div class="crit-why">Oral eviction without court order is unconstitutional.</div>
+                <span class="crit-tag"><span class="cn-badge risk-d" style="font-size:9px">Illegal Clause</span></span>
+              </div>
+            </div>
+            <div class="crit-item">
+              <div class="crit-num">C6</div>
+              <div class="crit-body">
+                <div class="crit-name">Lock-in 36 months + ₹72k Penalty</div>
+                <div class="crit-why">Double penalty — forfeiture AND cash penalty is unconscionable.</div>
+                <span class="crit-tag"><span class="cn-badge risk-d" style="font-size:9px">₹72,000 penalty</span></span>
+              </div>
+            </div>
+            <div class="crit-item">
+              <div class="crit-num">C9</div>
+              <div class="crit-body">
+                <div class="crit-name">Landlord Entry Without Notice</div>
+                <div class="crit-why">Violates right to privacy. Minimum 24hr notice required by law.</div>
+                <span class="crit-tag"><span class="cn-badge risk-d" style="font-size:9px">Privacy Violation</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rep-card anim d1">
+          <div class="rep-card-head">
+            <div class="rep-card-title">📊 Risk Score Breakdown</div>
+          </div>
+          <div class="rep-card-body">
+            <div class="score-row">
+              <div class="score-label">Deposit Terms</div>
+              <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--red)"></div></div>
+              <div class="score-val" style="color:var(--red)">90</div>
+            </div>
+            <div class="score-row">
+              <div class="score-label">Eviction Rights</div>
+              <div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--red)"></div></div>
+              <div class="score-val" style="color:var(--red)">95</div>
+            </div>
+            <div class="score-row">
+              <div class="score-label">Lock-in Penalty</div>
+              <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--red)"></div></div>
+              <div class="score-val" style="color:var(--red)">80</div>
+            </div>
+            <div class="score-row">
+              <div class="score-label">Repair Responsibility</div>
+              <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:var(--amber)"></div></div>
+              <div class="score-val" style="color:var(--amber)">60</div>
+            </div>
+            <div class="score-row">
+              <div class="score-label">Missing Protections</div>
+              <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:var(--amber)"></div></div>
+              <div class="score-val" style="color:var(--amber)">70</div>
+            </div>
+            <div class="score-row">
+              <div class="score-label">Rent Terms</div>
+              <div class="score-bar-bg"><div class="score-bar-fill" style="width:15%;background:var(--green)"></div></div>
+              <div class="score-val" style="color:var(--green)">15</div>
+            </div>
+            <div class="score-row">
+              <div class="score-label">Dispute Resolution</div>
+              <div class="score-bar-bg"><div class="score-bar-fill" style="width:10%;background:var(--green)"></div></div>
+              <div class="score-val" style="color:var(--green)">10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rep-card anim d2">
+          <div class="rep-card-head">
+            <div class="rep-card-title">🔒 Missing Protections</div>
+            <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--amb-l);color:var(--amber)">3 Absent</span>
+          </div>
+          <div class="rep-card-body">
+            <div class="crit-item">
+              <div class="crit-num">—</div>
+              <div class="crit-body">
+                <div class="crit-name">Deposit Receipt Clause</div>
+                <div class="crit-why">No clause mandating landlord to provide written deposit receipt. Add immediately.</div>
+              </div>
+            </div>
+            <div class="crit-item">
+              <div class="crit-num">—</div>
+              <div class="crit-body">
+                <div class="crit-name">Annual Rent Increase Cap</div>
+                <div class="crit-why">No limit on how much rent can be raised each year. Landlord can double rent arbitrarily.</div>
+              </div>
+            </div>
+            <div class="crit-item">
+              <div class="crit-num">—</div>
+              <div class="crit-body">
+                <div class="crit-name">Property Condition Record</div>
+                <div class="crit-why">No clause requiring joint inspection report at move-in. Critical for deposit disputes.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rep-card anim d2">
+          <div class="rep-card-head">
+            <div class="rep-card-title">💡 AI Recommendations</div>
+          </div>
+          <div class="rep-card-body">
+            <div class="rec-item">
+              <div class="rec-icon">🔴</div>
+              <div class="rec-text"><strong>Negotiate Clause 3</strong> — Reduce deposit to 2 months. Add "excluding normal wear and tear" and 30-day return window. This is your biggest financial exposure.</div>
+            </div>
+            <div class="rec-item">
+              <div class="rec-icon">🔴</div>
+              <div class="rec-text"><strong>Strike Clause 4</strong> — Demand minimum 1-month written notice for eviction. Oral eviction is unconstitutional under Article 21.</div>
+            </div>
+            <div class="rec-item">
+              <div class="rec-icon">🟡</div>
+              <div class="rec-text"><strong>Add move-in inspection</strong> — Before signing, document property condition with dated photos. Make landlord sign an inventory list. Protects your deposit entirely.</div>
+            </div>
+            <div class="rec-item">
+              <div class="rec-icon">🟡</div>
+              <div class="rec-text"><strong>Add rent increase cap</strong> — Negotiate maximum 5% annual increase clause. Without this, your rent can triple next year with 30 days notice.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action strip -->
+      <div class="rep-action-row anim d3">
+        <button class="rep-btn vio" onclick="showPage('detail')">📋 Review All Clauses</button>
+        <button class="rep-btn">📥 Download Report PDF</button>
+        <button class="rep-btn">📤 Send to Lawyer</button>
+        <button class="rep-btn">✏ Generate Negotiation Letter</button>
+        <button class="rep-btn" onclick="showPage('land')">🏠 Analyze New Contract</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.rail-btn[id]').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const rb = document.getElementById('rail-' + name);
+  if (rb) rb.classList.add('active');
+}
+
+function selectClause(id) { /* highlights handled by showPage */ }
+
+function switchClause(id) {
+  document.querySelectorAll('.cn-item').forEach(i => i.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+// filter buttons
+document.querySelectorAll('.cf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// lang pills
+document.querySelectorAll('.lang-pill').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.lang-pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+  });
+});
+
+document.getElementById("pdfFile").addEventListener("change", async function () {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/analyze",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (data.success) {
+
+           
+console.log(document.getElementById("resultsBox"));
+
+console.log(data);
+
+document.getElementById("resultsBox").innerHTML = `
+<h3 style="margin-bottom:10px;">
+Risk Score: ${data.risk_score}
+</h3>
+
+<h4>⚠ Issues Found</h4>
+
+<ul>
+${data.issues.map(issue => `<li>${issue}</li>`).join("")}
+</ul>
+
+<h4 style="margin-top:15px;">📋 Missing Clauses</h4>
+
+<ul>
+${data.missing_clauses.map(clause => `<li>${clause}</li>`).join("")}
+</ul>
+`;
+
+document.getElementById("riskScoreDisplay").innerText =
+data.risk_score;
+
+if (data.risk_score >= 70) {
+    document.getElementById("riskLabel").innerText = "HIGH RISK";
+}
+else if (data.risk_score >= 40) {
+    document.getElementById("riskLabel").innerText = "MEDIUM RISK";
+}
+else {
+    document.getElementById("riskLabel").innerText = "LOW RISK";
+}
+
+            showPage("analyze");
+
+        } else {
+
+            alert(data.error);
+
+        }
+
+    } catch (err) {
+
+        console.error(err);
+        alert("Connection Failed");
+
+    }
+
+});
+</script>
+</body>
+</html>
