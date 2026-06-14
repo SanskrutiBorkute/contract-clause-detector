@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import pdfplumber
 
@@ -7,7 +7,7 @@ CORS(app)
 
 @app.route("/")
 def home():
-    return "Contract Clause Detector Running"
+    return render_template("clauseguard.html")
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
