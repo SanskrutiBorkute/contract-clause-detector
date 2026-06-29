@@ -1,68 +1,64 @@
-# NOTES.txt
+=========================================================
+ClauseGuard AI Project Notes
+============================
 
-# ==========================================================
+Project Name:
+ClauseGuard AI – Contract Clause Anomaly Detector
 
-# CLAUSEGUARD AI – CONTRACT CLAUSE ANOMALY DETECTOR
+Author:
+Sanskruti Borkute
 
-# Developer Notes
+=========================================================
 
-# ==========================================================
+1. Project Overview
+   =========================================================
 
-## Project Overview
+ClauseGuard AI is an AI-powered contract analysis system developed using
+Python, Flask, Natural Language Processing (NLP), and Machine Learning.
 
-ClauseGuard AI is an AI-powered web application developed to analyze legal contracts and identify risky, unfair, or missing clauses. The system assists users by simplifying complex legal documents and providing contract risk analysis before signing.
+The application allows users to upload legal contracts in PDF, DOCX,
+or image format. The system automatically extracts text, segments the
+contract into clauses, identifies risky and predatory clauses, detects
+missing legal protections, calculates an overall risk score, and
+generates a downloadable PDF analysis report.
 
----
+=========================================================
+2. Technologies Used
+====================
 
-## Supported File Formats
-
-• PDF (.pdf)
-
-• Microsoft Word (.docx)
-
-• Image Files (.jpg, .jpeg, .png)
-
----
-
-## Key Features
-
-• Upload and analyze legal contracts.
-
-• Automatic text extraction from documents.
-
-• Clause segmentation and classification.
-
-• Detection of risky and predatory clauses.
-
-• Identification of missing legal protections.
-
-• AI-generated plain language explanations.
-
-• Suggested clause rewrites.
-
-• Overall contract risk score.
-
-• Downloadable PDF analysis report.
-
----
-
-## Technologies Used
-
-### Backend
+## Backend
 
 • Python
 
 • Flask
 
-### Frontend
+• Flask-CORS
 
-• HTML
+## Frontend
 
-• CSS
+• HTML5
+
+• CSS3
 
 • JavaScript
 
-### Libraries
+## Artificial Intelligence / NLP
+
+• Scikit-learn
+
+• spaCy
+
+• NLTK
+
+• Joblib
+
+## Data Processing
+
+• Pandas
+
+• NumPy
+
+## Document Processing
 
 • PDFPlumber
 
@@ -76,64 +72,292 @@ ClauseGuard AI is an AI-powered web application developed to analyze legal contr
 
 • pytesseract
 
-• NumPy
-
-• Pandas
-
-• Scikit-learn
-
-• Joblib
-
-• NLTK
-
-• spaCy
-
-• Requests
+## Report Generation
 
 • ReportLab
 
----
-
 ## Deployment
 
-• Version Control : Git
+Backend : Render
 
-• Repository : GitHub
+## Version Control
 
-• Deployment Platform : Render
+Git
+
+GitHub
+
+=========================================================
+3. Software Requirements
+========================
+
+Install the following software before running the project.
+
+• Python 3.10 or later
+
+• Git
+
+• Visual Studio Code
+
+• Tesseract OCR (for image text extraction)
+
+=========================================================
+4. Project Installation
+=======================
+
+Step 1
+
+Clone the repository.
+
+Step 2
+
+Create Virtual Environment
+
+python -m venv .venv
+
+Step 3
+
+Activate Virtual Environment
+
+Windows
+
+.venv\Scripts\activate
+
+Step 4
+
+Install project dependencies
+
+pip install -r requirements.txt
+
+Step 5
+
+Run the project
+
+python app.py
+
+The Flask server will start successfully.
+
+=========================================================
+5. Local URL
+============
+
+Application
+
+http://127.0.0.1:5000
+
+=========================================================
+6. Supported File Formats
+=========================
+
+• PDF (.pdf)
+
+• Microsoft Word (.docx)
+
+• Image Files (.jpg, .jpeg, .png)
+
+=========================================================
+7. Deployment (Render)
+======================
+
+1. Push project to GitHub.
+
+2. Login to Render.
+
+3. Click New Web Service.
+
+4. Connect GitHub repository.
+
+5. Select the repository.
+
+6. Build Command
+
+pip install -r requirements.txt
+
+7. Start Command
+
+python app.py
+
+8. Deploy the project.
+
+9. Copy the generated deployment URL.
+
+=========================================================
+8. Git Commands
+===============
+
+Initialize Git
+
+git init
+
+Check Status
+
+git status
+
+Add Files
+
+git add .
+
+Commit
+
+git commit -m "Initial Commit"
+
+Connect Repository
+
+git remote add origin Repository_URL
+
+Push
+
+git push -u origin main
+
+Pull
+
+git pull origin main
+
+=========================================================
+9. Main Features
+================
+
+• Upload legal contracts
+
+• Automatic text extraction
+
+• Clause segmentation
+
+• Clause classification
+
+• Risk score calculation
+
+• Predatory clause detection
+
+• Missing protection detection
+
+• Plain-language explanations
+
+• Suggested clause rewrites
+
+• Downloadable PDF reports
+
+=========================================================
+10. AI Modules
+==============
+
+The system performs
+
+• Contract Text Extraction
+
+• Clause Segmentation
+
+• Clause Classification
+
+• Risk Detection
+
+• Missing Protection Detection
+
+• PDF Report Generation
+
+=========================================================
+11. Generated Reports
+=====================
+
+The application automatically generates a professional PDF report
+containing
+
+• Contract Summary
+
+• Risk Score
+
+• Clause Analysis
+
+• Missing Protections
+
+• Suggested Rewrites
+
+• Plain-Language Explanations
+
+=========================================================
+12. Troubleshooting
+===================
+
+Problem
+
+ModuleNotFoundError
+
+Solution
+
+Install the missing package
+
+pip install package_name
 
 ---
 
-## Future Improvements
+Problem
 
-• AI-powered legal chatbot.
+OCR not working
 
-• Support for multiple languages.
+Solution
 
-• Comparison between multiple contracts.
-
-• Integration with Large Language Models (LLMs).
-
-• Digital signature verification.
-
-• Cloud storage for analyzed contracts.
-
-• Real-time legal recommendations.
+Install Tesseract OCR and configure its installation path.
 
 ---
 
-## Developer Notes
+Problem
 
-• This project is developed for educational and research purposes.
+Application not starting
 
-• The generated analysis is intended to assist users and should not replace professional legal advice.
+Solution
 
-• The accuracy of results depends on the quality and readability of the uploaded contract.
+Activate the virtual environment and verify all dependencies are
+installed.
 
-• OCR performance may vary for low-quality scanned documents.
+Run
 
-• Additional legal datasets can further improve the AI model in future versions.
+python app.py
 
 ---
 
-## End of Notes
+Problem
+
+Render deployment failed
+
+Solution
+
+Verify
+
+requirements.txt
+
+Build Command
+
+Start Command
+
+PORT configuration
+
+=========================================================
+13. Future Improvements
+=======================
+
+• AI Legal Chatbot
+
+• Multi-language contract analysis
+
+• Contract comparison
+
+• Digital signature verification
+
+• Cloud storage integration
+
+• LLM-powered legal explanations
+
+• Support for additional legal document formats
+
+=========================================================
+14. Project Developed By
+========================
+
+Sanskruti Borkute
+
+B.Tech Computer Engineering
+
+RTM Nagpur University
+
+=========================================================
+END OF DOCUMENT
+===============
