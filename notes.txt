@@ -1,0 +1,139 @@
+# NOTES.txt
+
+# ==========================================================
+
+# CLAUSEGUARD AI – CONTRACT CLAUSE ANOMALY DETECTOR
+
+# Developer Notes
+
+# ==========================================================
+
+## Project Overview
+
+ClauseGuard AI is an AI-powered web application developed to analyze legal contracts and identify risky, unfair, or missing clauses. The system assists users by simplifying complex legal documents and providing contract risk analysis before signing.
+
+---
+
+## Supported File Formats
+
+• PDF (.pdf)
+
+• Microsoft Word (.docx)
+
+• Image Files (.jpg, .jpeg, .png)
+
+---
+
+## Key Features
+
+• Upload and analyze legal contracts.
+
+• Automatic text extraction from documents.
+
+• Clause segmentation and classification.
+
+• Detection of risky and predatory clauses.
+
+• Identification of missing legal protections.
+
+• AI-generated plain language explanations.
+
+• Suggested clause rewrites.
+
+• Overall contract risk score.
+
+• Downloadable PDF analysis report.
+
+---
+
+## Technologies Used
+
+### Backend
+
+• Python
+
+• Flask
+
+### Frontend
+
+• HTML
+
+• CSS
+
+• JavaScript
+
+### Libraries
+
+• PDFPlumber
+
+• PyPDF2
+
+• python-docx
+
+• pdf2image
+
+• Pillow
+
+• pytesseract
+
+• NumPy
+
+• Pandas
+
+• Scikit-learn
+
+• Joblib
+
+• NLTK
+
+• spaCy
+
+• Requests
+
+• ReportLab
+
+---
+
+## Deployment
+
+• Version Control : Git
+
+• Repository : GitHub
+
+• Deployment Platform : Render
+
+---
+
+## Future Improvements
+
+• AI-powered legal chatbot.
+
+• Support for multiple languages.
+
+• Comparison between multiple contracts.
+
+• Integration with Large Language Models (LLMs).
+
+• Digital signature verification.
+
+• Cloud storage for analyzed contracts.
+
+• Real-time legal recommendations.
+
+---
+
+## Developer Notes
+
+• This project is developed for educational and research purposes.
+
+• The generated analysis is intended to assist users and should not replace professional legal advice.
+
+• The accuracy of results depends on the quality and readability of the uploaded contract.
+
+• OCR performance may vary for low-quality scanned documents.
+
+• Additional legal datasets can further improve the AI model in future versions.
+
+---
+
+## End of Notes
