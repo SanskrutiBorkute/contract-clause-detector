@@ -1,0 +1,167 @@
+# FILE_STRUCTURE.txt
+
+# ==========================================================
+
+# CLAUSEGUARD AI – CONTRACT CLAUSE ANOMALY DETECTOR
+
+# Project File Structure
+
+# ==========================================================
+
+```text
+Contract-Clause-Detector/
+│
+├── app.py
+├── requirements.txt
+├── fix_html_structure.py
+│
+├── detectors/
+│   ├── __init__.py
+│   ├── missing_rules.py
+│   └── predatory_rules.py
+│
+├── models/
+│   └── __init__.py
+│
+├── reports/
+│
+├── routes/
+│   ├── __init__.py
+│   ├── analyzer.py
+│   └── reports.py
+│
+├── services/
+│   ├── __init__.py
+│   ├── classifier.py
+│   ├── extractor.py
+│   ├── missing_detector.py
+│   ├── report_generator.py
+│   ├── risk_detector.py
+│   └── segmenter.py
+│
+├── templates/
+│   └── clauseguard.html
+│
+├── uploads/
+│
+├── utils/
+│
+└── __pycache__/
+```
+
+---
+
+## File Description
+
+### app.py
+
+This is the main Flask application. It starts the server, registers all routes, and connects every module of the project.
+
+### requirements.txt
+
+Contains all the Python libraries required to install and run the project successfully.
+
+### fix_html_structure.py
+
+A utility script used to correct or validate the HTML structure whenever required.
+
+---
+
+## detectors/
+
+### **init**.py
+
+Initializes the detectors package.
+
+### missing_rules.py
+
+Contains predefined rules to detect missing legal clauses and protections within contracts.
+
+### predatory_rules.py
+
+Contains rules for identifying unfair, risky, or predatory clauses.
+
+---
+
+## models/
+
+### **init**.py
+
+Initializes the models package. This folder is reserved for machine learning models if required in future versions.
+
+---
+
+## reports/
+
+Stores all generated PDF contract analysis reports after successful analysis.
+
+---
+
+## routes/
+
+### **init**.py
+
+Initializes the routes package.
+
+### analyzer.py
+
+Handles contract upload, processing, and analysis requests.
+
+### reports.py
+
+Handles generation and downloading of PDF reports.
+
+---
+
+## services/
+
+### **init**.py
+
+Initializes the services package.
+
+### classifier.py
+
+Classifies extracted contract clauses into different legal categories.
+
+### extractor.py
+
+Extracts text from uploaded PDF, DOCX, and image files.
+
+### missing_detector.py
+
+Identifies important legal protections that are absent from the contract.
+
+### report_generator.py
+
+Creates a professional PDF report containing the complete contract analysis.
+
+### risk_detector.py
+
+Calculates the overall contract risk score and determines the risk level.
+
+### segmenter.py
+
+Splits the extracted contract text into individual clauses for detailed analysis.
+
+---
+
+## templates/
+
+### clauseguard.html
+
+The main frontend page of the application. It contains the complete user interface for uploading contracts and displaying analysis results.
+
+---
+
+## uploads/
+
+Temporarily stores contracts uploaded by users before processing.
+
+---
+
+## utils/
+
+Contains helper functions and utility modules that support different parts of the application.
+
+
+
