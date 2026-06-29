@@ -1,0 +1,103 @@
+{
+    "analysis_id": "43725089-be48-47b9-9a4e-ed19934e752d",
+    "success": true,
+    "contract_type": "Purchase Agreement",
+    "filename": "Sale_Purchase_Agreement.pdf",
+    "text": "SALE AND PURCHASE AGREEMENT\r\nGoods\r\nSeller agrees to sell 100 laptops.\r\nPrice\r\nTotal price INR 50,00,000.\r\nDelivery\r\nDelivery within 30 days.\r\nInspection\r\nBuyer may inspect goods upon delivery.\r\nRisk\r\nRisk transfers after successful delivery.\r\nWarranty\r\nOne-year warranty.\r\nGoverning Law\r\nIndian law applies.\n",
+    "summary": {
+        "contract_type": "Purchase Agreement",
+        "clause_count": 1,
+        "issues_count": 0,
+        "missing_clauses_count": 3,
+        "overall_risk": "MEDIUM RISK",
+        "risk_score": 29,
+        "confidence": 67,
+        "reading_time_mins": 1,
+        "one_line_summary": "Moderate-risk Purchase Agreement with 1 clauses. Minor tweaks are suggested for the 0 flagged areas.",
+        "ai_executive_summary": "This purchase agreement contains 1 clauses. No high or critical risk clauses were flagged inside the document. 3 recommended legal protections are missing, including Termination Clause, and Dispute Resolution Clause. Overall risk score: 29/100. Legal recommendation: Sign After Negotiation.",
+        "page_count": 1,
+        "processing_time_ms": 235.0015640258789,
+        "overall_recommendation": "Sign After Negotiation. The contract contains standard terms but has moderate risk areas that should be adjusted.",
+        "final_recommendation": "Sign After Negotiation",
+        "top_risks": [
+            {
+                "clause_id": "MISSING",
+                "category": "Termination Clause",
+                "risk_level": "WARNING",
+                "reason": "No clause defines the termination procedure for the agreement.",
+                "financial_impact": "Varies",
+                "consequences": "Add a standard termination notice clause."
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Dispute Resolution Clause",
+                "risk_level": "WARNING",
+                "reason": "No mechanism is present to resolve conflicts outside of expensive court litigation.",
+                "financial_impact": "Varies",
+                "consequences": "Add mutual negotiation and mediation clauses."
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Governing Law & Jurisdiction",
+                "risk_level": "WARNING",
+                "reason": "No governing legal framework is specified.",
+                "financial_impact": "Varies",
+                "consequences": "Insert Indian governing law and local exclusive jurisdiction clauses."
+            }
+        ]
+    },
+    "clauses": [
+        {
+            "id": "clause_1",
+            "number": "CLAUSE 1",
+            "title": "Inspection Rights",
+            "text": "SALE AND PURCHASE AGREEMENT\nGoods\nSeller agrees to sell 100 laptops.\nPrice\nTotal price INR 50,00,000.\nDelivery\nDelivery within 30 days.\nInspection\nBuyer may inspect goods upon delivery.\nRisk\nRisk transfers after successful delivery.\nWarranty\nOne-year warranty.\nGoverning Law\nIndian law applies.",
+            "category": "Inspection Rights",
+            "confidence": 67,
+            "risk_level": "SAFE",
+            "risk_weight": 0,
+            "matched_evidence": [],
+            "detected_sentence": "N/A",
+            "reason": "No issues identified. Clause conforms to standard legal templates.",
+            "explanation": "Allowing unrestricted landlord entry violates your right to quiet enjoyment, compromises business privacy, poses safety risks, and can lead to disruptions of commercial operations.",
+            "consequences": "Standard clause, low operational risk.",
+            "rewrite": "SALE AND PURCHASE AGREEMENT\nGoods\nSeller agrees to sell 100 laptops.\nPrice\nTotal price INR 50,00,000.\nDelivery\nDelivery within 30 days.\nInspection\nBuyer may inspect goods upon delivery.\nRisk\nRisk transfers after successful delivery.\nWarranty\nOne-year warranty.\nGoverning Law\nIndian law applies.",
+            "negotiation_advice": "Strictly object to entry 'at any time without notice'. Insist on a minimum 24-hour advance written notice, entry only during normal business hours, and the presence of a tenant representative.",
+            "severity": {
+                "financial_risk": "LOW",
+                "legal_validity": "STRONG",
+                "negotiability": "LOW"
+            },
+            "indian_law": [
+                "Model Tenancy Act, 2021 \u2014 Section 15 (Entry of Landlord)",
+                "Indian Constitution \u2014 Article 21 (Right to Privacy)"
+            ],
+            "financial_impact": "None",
+            "legal_impact": "Standard legal validity."
+        }
+    ],
+    "missing_protections": [
+        {
+            "name": "Termination Clause",
+            "why_missing": "No clause defines the termination procedure for the agreement.",
+            "remedy": "Add a standard termination notice clause."
+        },
+        {
+            "name": "Dispute Resolution Clause",
+            "why_missing": "No mechanism is present to resolve conflicts outside of expensive court litigation.",
+            "remedy": "Add mutual negotiation and mediation clauses."
+        },
+        {
+            "name": "Governing Law & Jurisdiction",
+            "why_missing": "No governing legal framework is specified.",
+            "remedy": "Insert Indian governing law and local exclusive jurisdiction clauses."
+        }
+    ],
+    "issues": [],
+    "counts": {
+        "critical": 0,
+        "high": 0,
+        "warning": 0,
+        "safe": 1
+    }
+}

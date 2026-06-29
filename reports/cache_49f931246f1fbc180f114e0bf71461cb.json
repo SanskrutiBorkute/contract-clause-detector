@@ -1,0 +1,143 @@
+{
+    "analysis_id": "4d93df8b-bf7e-46f9-be6a-6c51ce39d296",
+    "success": true,
+    "contract_type": "Employment Contract",
+    "filename": "Employment_Contract.pdf",
+    "text": "EMPLOYMENT AGREEMENT\r\nPosition\r\nThe Employee shall serve as Software Engineer.\r\nSalary\r\nMonthly salary shall be INR 60,000 payable on the last working day.\r\nProbation\r\nProbation period shall be 6 months.\r\nTermination\r\nEither party may terminate by giving 30 days written notice.\r\nConfidentiality\r\nEmployee shall keep company information confidential.\r\nNon-Compete\r\nEmployee shall not work for a direct competitor for 12 months after leaving.\r\nGoverning Law\r\nThis agreement shall be governed by the laws of India.\n",
+    "summary": {
+        "contract_type": "Employment Contract",
+        "clause_count": 1,
+        "issues_count": 0,
+        "missing_clauses_count": 8,
+        "overall_risk": "MEDIUM RISK",
+        "risk_score": 37,
+        "confidence": 99,
+        "reading_time_mins": 1,
+        "one_line_summary": "Moderate-risk Employment Contract with 1 clauses. Minor tweaks are suggested for the 0 flagged areas.",
+        "ai_executive_summary": "This employment contract contains 1 clauses. No high or critical risk clauses were flagged inside the document. 8 recommended legal protections are missing, including Force Majeure Clause, and Dispute Resolution Clause. Overall risk score: 37/100. Legal recommendation: Sign After Negotiation.",
+        "page_count": 1,
+        "processing_time_ms": 186.61832809448242,
+        "overall_recommendation": "Sign After Negotiation. The contract contains standard terms but has moderate risk areas that should be adjusted.",
+        "final_recommendation": "Sign After Negotiation",
+        "top_risks": [
+            {
+                "clause_id": "MISSING",
+                "category": "Force Majeure Clause",
+                "risk_level": "WARNING",
+                "reason": "Missing Force Majeure clause. Under extreme circumstances (natural disasters, pandemics), the employer could terminate employment instantly or withhold pay without a defined legal framework.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'Performance of duties and payment of salary may be modified or suspended mutually in the event of continuous force majeure occurrences.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Dispute Resolution Clause",
+                "risk_level": "WARNING",
+                "reason": "Without a dispute resolution process, internal issues (appraisals, harassment, contract breaches) may result in immediate litigation or public labor disputes rather than confidential mediation.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'Any dispute arising under this contract shall first be referred to the internal HR Grievance Committee, followed by mutual mediation before legal action.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Confidentiality Clause",
+                "risk_level": "WARNING",
+                "reason": "No confidentiality protection is present. The employee can share sensitive trade secrets, source code, customer lists, and business strategies with competitors without violating the contract.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'The Employee shall not disclose any confidential information, trade secrets, or client data of the Employer during or after the term of employment.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Notice Period Clause",
+                "risk_level": "WARNING",
+                "reason": "No exit notice period is defined. The employee can walk out on a critical project with zero warning, or the employer can fire the employee instantly without severance.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'Either party may terminate employment by giving 30 days' written notice or salary in lieu of notice.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Renewal Option Clause",
+                "risk_level": "WARNING",
+                "reason": "For fixed-term contracts, the lack of renewal terms means employment simply lapses, creating job insecurity for the employee and operational disruptions for the employer.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'This contract may be extended or renewed upon mutual written agreement of both parties at least 15 days prior to expiry.'"
+            }
+        ]
+    },
+    "clauses": [
+        {
+            "id": "clause_1",
+            "number": "CLAUSE 1",
+            "title": "Governing Law",
+            "text": "EMPLOYMENT AGREEMENT\nPosition\nThe Employee shall serve as Software Engineer.\nSalary\nMonthly salary shall be INR 60,000 payable on the last working day.\nProbation\nProbation period shall be 6 months.\nTermination\nEither party may terminate by giving 30 days written notice.\nConfidentiality\nEmployee shall keep company information confidential.\nNon-Compete\nEmployee shall not work for a direct competitor for 12 months after leaving.\nGoverning Law\nThis agreement shall be governed by the laws of India.",
+            "category": "Governing Law",
+            "confidence": 99,
+            "risk_level": "SAFE",
+            "risk_weight": 0,
+            "matched_evidence": [],
+            "detected_sentence": "N/A",
+            "reason": "No issues identified. Clause conforms to standard legal templates.",
+            "explanation": "Vague or foreign governing laws create extreme uncertainty and require foreign legal experts to resolve disputes, adding immense overhead.",
+            "consequences": "Standard clause, low operational risk.",
+            "rewrite": "EMPLOYMENT AGREEMENT\nPosition\nThe Employee shall serve as Software Engineer.\nSalary\nMonthly salary shall be INR 60,000 payable on the last working day.\nProbation\nProbation period shall be 6 months.\nTermination\nEither party may terminate by giving 30 days written notice.\nConfidentiality\nEmployee shall keep company information confidential.\nNon-Compete\nEmployee shall not work for a direct competitor for 12 months after leaving.\nGoverning Law\nThis agreement shall be governed by the laws of India.",
+            "negotiation_advice": "Ensure the governing law is specified as Indian law, particularly for domestic transactions. Foreign governing laws are costly to interpret and contest.",
+            "severity": {
+                "financial_risk": "LOW",
+                "legal_validity": "STRONG",
+                "negotiability": "LOW"
+            },
+            "indian_law": [
+                "Indian Contract Act, 1872"
+            ],
+            "financial_impact": "None",
+            "legal_impact": "Standard legal validity."
+        }
+    ],
+    "missing_protections": [
+        {
+            "name": "Force Majeure Clause",
+            "why_missing": "Missing Force Majeure clause. Under extreme circumstances (natural disasters, pandemics), the employer could terminate employment instantly or withhold pay without a defined legal framework.",
+            "remedy": "Add: 'Performance of duties and payment of salary may be modified or suspended mutually in the event of continuous force majeure occurrences.'"
+        },
+        {
+            "name": "Dispute Resolution Clause",
+            "why_missing": "Without a dispute resolution process, internal issues (appraisals, harassment, contract breaches) may result in immediate litigation or public labor disputes rather than confidential mediation.",
+            "remedy": "Add: 'Any dispute arising under this contract shall first be referred to the internal HR Grievance Committee, followed by mutual mediation before legal action.'"
+        },
+        {
+            "name": "Confidentiality Clause",
+            "why_missing": "No confidentiality protection is present. The employee can share sensitive trade secrets, source code, customer lists, and business strategies with competitors without violating the contract.",
+            "remedy": "Add: 'The Employee shall not disclose any confidential information, trade secrets, or client data of the Employer during or after the term of employment.'"
+        },
+        {
+            "name": "Notice Period Clause",
+            "why_missing": "No exit notice period is defined. The employee can walk out on a critical project with zero warning, or the employer can fire the employee instantly without severance.",
+            "remedy": "Add: 'Either party may terminate employment by giving 30 days' written notice or salary in lieu of notice.'"
+        },
+        {
+            "name": "Renewal Option Clause",
+            "why_missing": "For fixed-term contracts, the lack of renewal terms means employment simply lapses, creating job insecurity for the employee and operational disruptions for the employer.",
+            "remedy": "Add: 'This contract may be extended or renewed upon mutual written agreement of both parties at least 15 days prior to expiry.'"
+        },
+        {
+            "name": "Refund / Compensation Clause",
+            "why_missing": "Missing clear terms on final settlement timelines, potentially leading to the employer delaying severance, unpaid bonuses, or expense refunds post-termination.",
+            "remedy": "Add: 'Upon termination, the Employer shall release all due salary, gratuity, and expense refunds within 15 days of the employee's final working day.'"
+        },
+        {
+            "name": "Employee Indemnification Clause",
+            "why_missing": "Without an indemnity limit, the employee could be held personally liable for company losses or third-party lawsuits arising from standard business decisions.",
+            "remedy": "Add: 'The Employer shall defend and indemnify the Employee against any third-party claims or liabilities arising out of the performance of their standard duties.'"
+        },
+        {
+            "name": "Limitation of Employee Liability",
+            "why_missing": "No liability cap protects the employee. The company could sue the employee for unlimited damages if a coding bug or business mistake causes financial loss.",
+            "remedy": "Add: 'Except in cases of fraud or willful misconduct, the Employee's liability for any loss caused to the Employer shall be capped at a maximum of 3 months' basic salary.'"
+        }
+    ],
+    "issues": [],
+    "counts": {
+        "critical": 0,
+        "high": 0,
+        "warning": 0,
+        "safe": 1
+    }
+}

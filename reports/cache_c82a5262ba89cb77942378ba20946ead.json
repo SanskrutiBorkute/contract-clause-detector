@@ -1,0 +1,144 @@
+{
+    "analysis_id": "29b00d0b-aa47-45c5-9613-bbc053c338b4",
+    "success": true,
+    "contract_type": "NDA",
+    "filename": "NDA_Agreement.pdf",
+    "text": "NON-DISCLOSURE AGREEMENT\r\nConfidential Information\r\nAll technical and business information shall remain confidential.\r\nPermitted Use\r\nInformation shall only be used for evaluation purposes.\r\nExceptions\r\nPublicly available information is excluded.\r\nTerm\r\nConfidentiality obligations continue for 5 years.\r\nReturn of Information\r\nAll confidential material shall be returned upon request.\r\nGoverning Law\r\nLaws of India apply.\n",
+    "summary": {
+        "contract_type": "NDA",
+        "clause_count": 1,
+        "issues_count": 0,
+        "missing_clauses_count": 8,
+        "overall_risk": "MEDIUM RISK",
+        "risk_score": 37,
+        "confidence": 98,
+        "reading_time_mins": 1,
+        "one_line_summary": "Moderate-risk NDA with 1 clauses. Minor tweaks are suggested for the 0 flagged areas.",
+        "ai_executive_summary": "This nda contains 1 clauses. No high or critical risk clauses were flagged inside the document. 8 recommended legal protections are missing, including Governing Law Clause, and Force Majeure Clause. Overall risk score: 37/100. Legal recommendation: Sign After Negotiation.",
+        "page_count": 1,
+        "processing_time_ms": 379.241943359375,
+        "overall_recommendation": "Sign After Negotiation. The contract contains standard terms but has moderate risk areas that should be adjusted.",
+        "final_recommendation": "Sign After Negotiation",
+        "top_risks": [
+            {
+                "clause_id": "MISSING",
+                "category": "Governing Law Clause",
+                "risk_level": "WARNING",
+                "reason": "Missing Governing Law. Confidentiality breaches involve complex legal actions; without a defined governing law, pursuing an injunction is extremely complicated.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'This agreement shall be governed by and construed in accordance with the laws of India.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Force Majeure Clause",
+                "risk_level": "WARNING",
+                "reason": "No Force Majeure protection. If a party is forced to disclose information due to government orders or regulatory disasters, they could technically be held in breach of the NDA.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'No party shall be in breach for disclosures required by law, regulatory authorities, or orders of competent courts, provided prior notice is given.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Dispute Resolution & Jurisdiction",
+                "risk_level": "WARNING",
+                "reason": "No specific dispute resolution mechanism is present, making it difficult to quickly obtain an injunction or damages in the event of a leaks/breach of confidentiality.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'Any dispute arising out of this NDA shall be referred to arbitration under the Arbitration and Conciliation Act, with Nagpur designated as the seat.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "NDA Duration / Expiry Notice",
+                "risk_level": "WARNING",
+                "reason": "The agreement lacks a defined duration or survival period, meaning the confidentiality obligations could be deemed indefinite (which courts dislike) or terminate instantly upon contract end.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'The obligations of confidentiality shall remain in force for a period of 3 years from the date of disclosure, surviving any termination of this agreement.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Renewal / Term Extension Option",
+                "risk_level": "WARNING",
+                "reason": "Missing extension terms, which could lead to confidential discussions continuing after the NDA has expired without active legal protection.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'The term of this NDA may be extended in writing by mutual consent to cover ongoing discussions.'"
+            }
+        ]
+    },
+    "clauses": [
+        {
+            "id": "clause_1",
+            "number": "CLAUSE 1",
+            "title": "Confidentiality",
+            "text": "NON-DISCLOSURE AGREEMENT\nConfidential Information\nAll technical and business information shall remain confidential.\nPermitted Use\nInformation shall only be used for evaluation purposes.\nExceptions\nPublicly available information is excluded.\nTerm\nConfidentiality obligations continue for 5 years.\nReturn of Information\nAll confidential material shall be returned upon request.\nGoverning Law\nLaws of India apply.",
+            "category": "Confidentiality",
+            "confidence": 98,
+            "risk_level": "SAFE",
+            "risk_weight": 0,
+            "matched_evidence": [],
+            "detected_sentence": "N/A",
+            "reason": "No issues identified. Clause conforms to standard legal templates.",
+            "explanation": "Unbalanced or permanent confidentiality clauses expose your business to litigation if standard business details are shared. Employees and contractors could face injunctions or damages.",
+            "consequences": "Standard clause, low operational risk.",
+            "rewrite": "NON-DISCLOSURE AGREEMENT\nConfidential Information\nAll technical and business information shall remain confidential.\nPermitted Use\nInformation shall only be used for evaluation purposes.\nExceptions\nPublicly available information is excluded.\nTerm\nConfidentiality obligations continue for 5 years.\nReturn of Information\nAll confidential material shall be returned upon request.\nGoverning Law\nLaws of India apply.",
+            "negotiation_advice": "Insist that confidentiality obligations be reciprocal. Ensure there are standard exceptions (e.g., information that is already public, received from a third party, or required to be disclosed by law). Limit the survival period to 2-3 years post-termination.",
+            "severity": {
+                "financial_risk": "LOW",
+                "legal_validity": "STRONG",
+                "negotiability": "LOW"
+            },
+            "indian_law": [
+                "Information Technology Act, 2000",
+                "Indian Contract Act, 1872 \u2014 Section 27 (Restraint of Trade / Survival)"
+            ],
+            "financial_impact": "None",
+            "legal_impact": "Standard legal validity."
+        }
+    ],
+    "missing_protections": [
+        {
+            "name": "Governing Law Clause",
+            "why_missing": "Missing Governing Law. Confidentiality breaches involve complex legal actions; without a defined governing law, pursuing an injunction is extremely complicated.",
+            "remedy": "Add: 'This agreement shall be governed by and construed in accordance with the laws of India.'"
+        },
+        {
+            "name": "Force Majeure Clause",
+            "why_missing": "No Force Majeure protection. If a party is forced to disclose information due to government orders or regulatory disasters, they could technically be held in breach of the NDA.",
+            "remedy": "Add: 'No party shall be in breach for disclosures required by law, regulatory authorities, or orders of competent courts, provided prior notice is given.'"
+        },
+        {
+            "name": "Dispute Resolution & Jurisdiction",
+            "why_missing": "No specific dispute resolution mechanism is present, making it difficult to quickly obtain an injunction or damages in the event of a leaks/breach of confidentiality.",
+            "remedy": "Add: 'Any dispute arising out of this NDA shall be referred to arbitration under the Arbitration and Conciliation Act, with Nagpur designated as the seat.'"
+        },
+        {
+            "name": "NDA Duration / Expiry Notice",
+            "why_missing": "The agreement lacks a defined duration or survival period, meaning the confidentiality obligations could be deemed indefinite (which courts dislike) or terminate instantly upon contract end.",
+            "remedy": "Add: 'The obligations of confidentiality shall remain in force for a period of 3 years from the date of disclosure, surviving any termination of this agreement.'"
+        },
+        {
+            "name": "Renewal / Term Extension Option",
+            "why_missing": "Missing extension terms, which could lead to confidential discussions continuing after the NDA has expired without active legal protection.",
+            "remedy": "Add: 'The term of this NDA may be extended in writing by mutual consent to cover ongoing discussions.'"
+        },
+        {
+            "name": "Return of Confidential Materials",
+            "why_missing": "No clause mandates the return or destruction of confidential files, allowing the receiving party to retain local copies of sensitive code, designs, or data indefinitely.",
+            "remedy": "Add: 'Upon written request, the receiving party shall return or destroy all physical and digital copies of confidential materials within 10 days.'"
+        },
+        {
+            "name": "Breach Indemnification Clause",
+            "why_missing": "No indemnity is specified for confidentiality breaches. If the receiving party leaks proprietary trade secrets, the disclosing party has to prove actual damages in court, which is highly difficult.",
+            "remedy": "Add: 'The receiving party shall indemnify the disclosing party for any direct losses, damages, or legal expenses arising from an unauthorized disclosure of confidential info.'"
+        },
+        {
+            "name": "Limitation of Liability (NDA)",
+            "why_missing": "No liability cap is present. While disclosures should have strong remedies, a receiving party faces unlimited punitive damages for accidental or non-willful disclosures.",
+            "remedy": "Add: 'Except in cases of gross negligence or willful disclosure, the total liability under this NDA shall be capped at a reasonable mutually agreed sum.'"
+        }
+    ],
+    "issues": [],
+    "counts": {
+        "critical": 0,
+        "high": 0,
+        "warning": 0,
+        "safe": 1
+    }
+}

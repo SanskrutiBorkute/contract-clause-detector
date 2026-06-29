@@ -1,0 +1,144 @@
+{
+    "analysis_id": "c23c8fda-6f1e-4cb9-b0d0-576ae1c92395",
+    "success": true,
+    "contract_type": "Rental Agreement",
+    "filename": "Lease_Agreement_Commercial.pdf",
+    "text": "COMMERCIAL LEASE AGREEMENT\r\nPremises\r\nCommercial office premises leased for 3 years.\r\nRent\r\nMonthly rent INR 80,000.\r\nSecurity Deposit\r\nSecurity deposit equal to 3 months rent.\r\nMaintenance\r\nTenant responsible for internal maintenance.\r\nRenewal\r\nRenewal by mutual written agreement.\r\nForce Majeure\r\nNeither party liable for delays due to force majeure.\r\nTermination\r\n60 days written notice required.\n",
+    "summary": {
+        "contract_type": "Rental Agreement",
+        "clause_count": 1,
+        "issues_count": 0,
+        "missing_clauses_count": 8,
+        "overall_risk": "MEDIUM RISK",
+        "risk_score": 35,
+        "confidence": 77,
+        "reading_time_mins": 1,
+        "one_line_summary": "Moderate-risk Rental Agreement with 1 clauses. Minor tweaks are suggested for the 0 flagged areas.",
+        "ai_executive_summary": "This rental agreement contains 1 clauses. No high or critical risk clauses were flagged inside the document. 8 recommended legal protections are missing, including Governing Law Clause, and Force Majeure Clause. Overall risk score: 35/100. Legal recommendation: Sign After Negotiation.",
+        "page_count": 1,
+        "processing_time_ms": 326.58910751342773,
+        "overall_recommendation": "Sign After Negotiation. The contract contains standard terms but has moderate risk areas that should be adjusted.",
+        "final_recommendation": "Sign After Negotiation",
+        "top_risks": [
+            {
+                "clause_id": "MISSING",
+                "category": "Governing Law Clause",
+                "risk_level": "WARNING",
+                "reason": "The agreement is missing a Governing Law clause. Without specifying the applicable state and local laws, any dispute will face legal ambiguity regarding which tenancy and rent control statutes apply, causing delays and unpredictable judicial rulings.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'This agreement shall be governed by and construed in accordance with the laws of India and the state in which the property is located.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Force Majeure Clause",
+                "risk_level": "WARNING",
+                "reason": "No Force Majeure protection is present. If a lockdown, natural disaster, fire, or government restriction prevents you from occupying or operating from the premises, you remain legally obligated to pay 100% of the rent and late fees.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'Neither party shall be liable for failure to perform if prevented by acts of God, pandemics, lockdowns, or disasters. During such periods, rent obligations shall be suspended or proportionally reduced.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Dispute Resolution Clause",
+                "risk_level": "WARNING",
+                "reason": "There is no structured dispute resolution path. If a conflict arises over maintenance, deposit, or rent, either party can immediately drag the other into a lengthy, expensive court battle without trying mediation first.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'In case of any dispute, the parties shall first attempt to resolve the issue amicably through good-faith negotiations or mediation within 30 days.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Confidentiality Clause",
+                "risk_level": "WARNING",
+                "reason": "No confidentiality terms protect the tenant's business operations or landlord's sensitive property/commercial info from being disclosed to third parties.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'Both parties agree to maintain the confidentiality of the terms of this lease and any proprietary business details disclosed during the tenancy.'"
+            },
+            {
+                "clause_id": "MISSING",
+                "category": "Notice Period Clause",
+                "risk_level": "WARNING",
+                "reason": "A notice period for terminating the lease is missing. This can lead to arguments over whether a party can terminate immediately or what constitutes reasonable notice before vacating.",
+                "financial_impact": "Varies",
+                "consequences": "Add: 'Either party may terminate this agreement by providing the other party with at least 30 days' written notice.'"
+            }
+        ]
+    },
+    "clauses": [
+        {
+            "id": "clause_1",
+            "number": "CLAUSE 1",
+            "title": "Renewal",
+            "text": "COMMERCIAL LEASE AGREEMENT\nPremises\nCommercial office premises leased for 3 years.\nRent\nMonthly rent INR 80,000.\nSecurity Deposit\nSecurity deposit equal to 3 months rent.\nMaintenance\nTenant responsible for internal maintenance.\nRenewal\nRenewal by mutual written agreement.\nForce Majeure\nNeither party liable for delays due to force majeure.\nTermination\n60 days written notice required.",
+            "category": "Renewal",
+            "confidence": 77,
+            "risk_level": "SAFE",
+            "risk_weight": 0,
+            "matched_evidence": [],
+            "detected_sentence": "N/A",
+            "reason": "No issues identified. Clause conforms to standard legal templates.",
+            "explanation": "Uncapped renewal terms allow landlords to hike rent by 30% or 50% upon renewal, forcing you to relocate your business and waste fit-out investments.",
+            "consequences": "Standard clause, low operational risk.",
+            "rewrite": "COMMERCIAL LEASE AGREEMENT\nPremises\nCommercial office premises leased for 3 years.\nRent\nMonthly rent INR 80,000.\nSecurity Deposit\nSecurity deposit equal to 3 months rent.\nMaintenance\nTenant responsible for internal maintenance.\nRenewal\nRenewal by mutual written agreement.\nForce Majeure\nNeither party liable for delays due to force majeure.\nTermination\n60 days written notice required.",
+            "negotiation_advice": "Avoid automatic renewals that lock you in without active approval. Add a cap on the rent increase upon renewal (standard in India is 5% to 8% per annum) to prevent arbitrary spikes.",
+            "severity": {
+                "financial_risk": "LOW",
+                "legal_validity": "STRONG",
+                "negotiability": "LOW"
+            },
+            "indian_law": [
+                "Transfer of Property Act, 1882",
+                "Model Tenancy Act, 2021"
+            ],
+            "financial_impact": "None",
+            "legal_impact": "Standard legal validity."
+        }
+    ],
+    "missing_protections": [
+        {
+            "name": "Governing Law Clause",
+            "why_missing": "The agreement is missing a Governing Law clause. Without specifying the applicable state and local laws, any dispute will face legal ambiguity regarding which tenancy and rent control statutes apply, causing delays and unpredictable judicial rulings.",
+            "remedy": "Add: 'This agreement shall be governed by and construed in accordance with the laws of India and the state in which the property is located.'"
+        },
+        {
+            "name": "Force Majeure Clause",
+            "why_missing": "No Force Majeure protection is present. If a lockdown, natural disaster, fire, or government restriction prevents you from occupying or operating from the premises, you remain legally obligated to pay 100% of the rent and late fees.",
+            "remedy": "Add: 'Neither party shall be liable for failure to perform if prevented by acts of God, pandemics, lockdowns, or disasters. During such periods, rent obligations shall be suspended or proportionally reduced.'"
+        },
+        {
+            "name": "Dispute Resolution Clause",
+            "why_missing": "There is no structured dispute resolution path. If a conflict arises over maintenance, deposit, or rent, either party can immediately drag the other into a lengthy, expensive court battle without trying mediation first.",
+            "remedy": "Add: 'In case of any dispute, the parties shall first attempt to resolve the issue amicably through good-faith negotiations or mediation within 30 days.'"
+        },
+        {
+            "name": "Confidentiality Clause",
+            "why_missing": "No confidentiality terms protect the tenant's business operations or landlord's sensitive property/commercial info from being disclosed to third parties.",
+            "remedy": "Add: 'Both parties agree to maintain the confidentiality of the terms of this lease and any proprietary business details disclosed during the tenancy.'"
+        },
+        {
+            "name": "Notice Period Clause",
+            "why_missing": "A notice period for terminating the lease is missing. This can lead to arguments over whether a party can terminate immediately or what constitutes reasonable notice before vacating.",
+            "remedy": "Add: 'Either party may terminate this agreement by providing the other party with at least 30 days' written notice.'"
+        },
+        {
+            "name": "Security Deposit Refund Protection",
+            "why_missing": "No refund timeline or rules cover the security deposit. The landlord could withhold your deposit indefinitely after you vacate, using arbitrary justifications without returning your funds.",
+            "remedy": "Add: 'The Landlord shall refund the security deposit in full within 30 days of the Tenant handing over possession, subject only to documented repairs beyond wear and tear.'"
+        },
+        {
+            "name": "Tenant Indemnity Protection",
+            "why_missing": "No clause protects the tenant from claims arising from building structural defects, landlord's negligence, or third-party injuries on the property.",
+            "remedy": "Add: 'The Landlord shall indemnify and hold the Tenant harmless against any claims, losses, or damages arising from structural failures, landlord's gross negligence, or title disputes.'"
+        },
+        {
+            "name": "Limitation of Liability",
+            "why_missing": "There is no limitation on the tenant's liability, leaving the tenant exposed to unlimited financial damages for accidental fires or structural accidents that occur on the property.",
+            "remedy": "Add: 'The Tenant's total liability for damage to the premises shall be capped at a maximum equivalent to 6 months' rent, excluding cases of gross negligence or willful misconduct.'"
+        }
+    ],
+    "issues": [],
+    "counts": {
+        "critical": 0,
+        "high": 0,
+        "warning": 0,
+        "safe": 1
+    }
+}
